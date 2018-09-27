@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import Cropper from 'cropperjs';
 
 export default class ReactCropper extends Component {
@@ -7,7 +7,7 @@ export default class ReactCropper extends Component {
     this.state = {
       cropperRef: createRef(),
     };
-    this.handleConfirm = this.handleConfirm.bind(this);
+    this.confirm = this.confirm.bind(this);
     this.getBaseRatio = this.getBaseRatio.bind(this);
     this.zoomTo = this.zoomTo.bind(this);
     this.handleFileChange = this.handleFileChange.bind(this);
@@ -46,14 +46,14 @@ export default class ReactCropper extends Component {
     this.setState({baseRatio: width / naturalWidth}, () => this.zoomTo(ratio))
   }
 
-  zoomTo(ratio) {
+  zoomTo(ratio = 1) {
     const {
       state: {cropper, baseRatio},
     } = this;
     cropper.zoomTo(baseRatio * ratio);
   }
 
-  handleConfirm() {
+  confirm() {
     const {
       state: {cropper},
       props: {toBlob, toBase64}
@@ -76,7 +76,7 @@ export default class ReactCropper extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     const {props, state} = this;
-    if(nextProps.Button !== props.Button || nextState.src !== state.src) {
+    if(nextState.src !== state.src) {
       return true
     } else if(nextProps.file !== props.file) {
       return this.handleFileChange(nextProps.file)
@@ -89,18 +89,11 @@ export default class ReactCropper extends Component {
 
   render() {
     const {
-      props: {Button = button},
       state: {cropperRef, src},
-      handleConfirm
     } = this;
 
     return (
-      <Fragment>
-        <div style={{height: '100%'}} ><img src={src} alt="img" ref={cropperRef} width='320' /></div>
-        <div style={{width: '100%', position: 'fixed', top: 320}} >
-          <Button onClick={handleConfirm} >确定</Button>
-        </div>
-      </Fragment>
+      <div style={{height: '100%'}} ><img src={src} alt="img" ref={cropperRef} width='320' /></div>
     )
   }
 }
