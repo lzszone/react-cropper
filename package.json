@@ -1,0 +1,33 @@
+{
+  "name": "@urfri/react-cropper",
+  "version": "0.0.1",
+  "description": "A react wrapper of cropperjs",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "npx webpack --config ./webpack.config.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lzszone/react-cropper.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lzszone/react-cropper/issues"
+  },
+  "homepage": "https://github.com/lzszone/react-cropper#readme",
+  "devDependencies": {
+    "@babel/core": "^7.1.0",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.2",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.1"
+  },
+  "peerDependencies": {
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2",
+    "cropperjs": "^1.4.1"
+  }
+}
