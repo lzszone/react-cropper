@@ -10,6 +10,12 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader'
+        ]
+      },{
         test: /\.js$/,
         use: {
           loader: "babel-loader",
@@ -33,12 +39,6 @@ module.exports = {
       commonjs2: 'react-dom',
       commonjs: 'react-dom',
       amd: 'react-dom'
-    },
-    cropperjs: {
-      root: 'Cropper',
-      commonjs2: 'cropperjs',
-      commonjs: 'cropperjs',
-      amd: 'cropperjs'
     }
   }
 }

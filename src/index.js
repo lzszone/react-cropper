@@ -1,40 +1,40 @@
 import React, {Component, createRef} from 'react';
 import Cropper from 'cropperjs';
 
+import '../node_modules/cropperjs';
+
 export default class ReactCropper extends Component {
   constructor(props) {
     super(props);
     this.state = {
       cropperRef: createRef(),
     };
+    console.log(props.src)
     this.confirm = this.confirm.bind(this);
     this.getBaseRatio = this.getBaseRatio.bind(this);
     this.zoomTo = this.zoomTo.bind(this);
-    this.handleFileChange = this.handleFileChange.bind(this);
   }
 
   componentDidMount() {
     const {
-      state: {cropperRef}
+      state: {cropperRef},
+      props: {aspectRatio = 1}
     } = this;
     const c = new Cropper(cropperRef.current, {
-      aspectRatio: 1,
+      aspectRatio,
       cropBoxResizable: false,
       dragMode: 'move',
       zoomOnWheel: false,
-      ready: this.getBaseRatio
+      ready: () => {
+        console.log('ready')
+        this.getBaseRatio()
+      }
     });
     this.setState({cropper: c})
   }
 
-  handleFileChange(file) {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      console.log(arguments);
-      const data = reader.result;
-      this.setState({src: data}, () => this.getBaseRatio())
-    }
+  componentWillUnmount() {
+    this.state.cropper.destroy();
   }
 
   getBaseRatio() {
@@ -65,7 +65,6 @@ export default class ReactCropper extends Component {
     }
     if(toBlob) {
       canvas.toBlob(blob => {
-        console.log(blob);
         toBlob(blob)
       }, 'image/jpeg')
     }
@@ -76,22 +75,23 @@ export default class ReactCropper extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     const {props, state} = this;
-    if(nextState.src !== state.src) {
-      return true
-    } else if(nextProps.file !== props.file) {
-      this.handleFileChange(nextProps.file);
-      return false
-    } else if(nextProps.ratio !== props.ratio) {
-      state.cropper.zoomTo(nextProps.ratio);
-      return false
-    } else {
-      return false
+    if(nextProps.src !== props.src) {
+      console.log(props.src)
+      state.cropper.reset().clear().replace(nextProps.src);
     }
+    if(nextProps.ratio !== props.ratio) {
+      state.cropper.zoomTo(nextProps.ratio);
+    }
+    if(nextProps.aspectRatio !== props.aspectRatio) {
+      state.cropper.setAspectRatio(nextProps.aspectRatio)
+    }
+    return false
   }
 
   render() {
     const {
-      state: {cropperRef, src},
+      state: {cropperRef},
+      props: {src}
     } = this;
 
     return (
