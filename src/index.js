@@ -79,9 +79,11 @@ export default class ReactCropper extends Component {
     if(nextState.src !== state.src) {
       return true
     } else if(nextProps.file !== props.file) {
-      return this.handleFileChange(nextProps.file)
+      this.handleFileChange(nextProps.file);
+      return false
     } else if(nextProps.ratio !== props.ratio) {
-      return state.cropper.zoomTo(nextProps.ratio);
+      state.cropper.zoomTo(nextProps.ratio);
+      return false
     } else {
       return false
     }
