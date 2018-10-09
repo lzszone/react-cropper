@@ -1,6 +1,6 @@
 {
   "name": "@urfri/react-cropper",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A react wrapper of cropperjs",
   "main": "./dist/index.js",
   "scripts": {
