@@ -1,7 +1,7 @@
 import React, {Component, createRef} from 'react';
 import Cropper from 'cropperjs';
 
-import '../node_modules/cropperjs';
+import '../node_modules/cropperjs/dist/cropper.css';
 
 export default class ReactCropper extends Component {
   constructor(props) {
@@ -9,7 +9,6 @@ export default class ReactCropper extends Component {
     this.state = {
       cropperRef: createRef(),
     };
-    console.log(props.src)
     this.confirm = this.confirm.bind(this);
     this.getBaseRatio = this.getBaseRatio.bind(this);
     this.zoomTo = this.zoomTo.bind(this);
@@ -40,10 +39,10 @@ export default class ReactCropper extends Component {
   getBaseRatio() {
     const {
       state: {cropper},
-      props: {ratio}
     } = this;
     const {naturalWidth, width} = cropper.getImageData();
-    this.setState({baseRatio: width / naturalWidth}, () => this.zoomTo(ratio))
+    const baseRatio = width / naturalWidth;
+    this.setState({baseRatio}, () => this.zoomTo())
   }
 
   zoomTo(ratio = 1) {
@@ -76,11 +75,10 @@ export default class ReactCropper extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     const {props, state} = this;
     if(nextProps.src !== props.src) {
-      console.log(props.src)
       state.cropper.reset().clear().replace(nextProps.src);
     }
     if(nextProps.ratio !== props.ratio) {
-      state.cropper.zoomTo(nextProps.ratio);
+      this.zoomTo(nextProps.ratio);
     }
     if(nextProps.aspectRatio !== props.aspectRatio) {
       state.cropper.setAspectRatio(nextProps.aspectRatio)
@@ -95,7 +93,7 @@ export default class ReactCropper extends Component {
     } = this;
 
     return (
-      <div style={{height: '100%'}} ><img src={src} alt="img" ref={cropperRef} width='320' /></div>
+      <div style={{height: '100%'}} ><img src={src} alt="img" ref={cropperRef} width='640' /></div>
     )
   }
 }
