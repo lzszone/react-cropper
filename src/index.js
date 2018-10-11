@@ -55,9 +55,9 @@ export default class ReactCropper extends Component {
   confirm() {
     const {
       state: {cropper},
-      props: {toBlob, toBase64}
+      props: {toBlob, toBase64, width = 640, height = 640}
     } = this;
-    const canvas = cropper.getCroppedCanvas({width: 640, height: 640});
+    const canvas = cropper.getCroppedCanvas({width, height});
     if(toBase64) {
       const data = canvas.toDataURL('image/jpeg');
       toBase64(data)
@@ -93,7 +93,7 @@ export default class ReactCropper extends Component {
     } = this;
 
     return (
-      <div style={{height: '100%'}} ><img src={src} alt="img" ref={cropperRef} width='640' /></div>
+      <div style={{height: '100%'}} ><img src={src} alt="img" ref={cropperRef} width='100%' /></div>
     )
   }
 }
